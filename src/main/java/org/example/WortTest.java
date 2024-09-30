@@ -26,4 +26,3 @@ public class WortTest {
         new org.example.TrainerFrame(tr);
     }
 }
-//Git: https://github.com/TGM-HIT/wortliste-MDurst06
