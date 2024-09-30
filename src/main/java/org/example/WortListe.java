@@ -9,12 +9,17 @@ package org.example;
 public class WortListe {
     private WortEintrag[] Worteinträge = new WortEintrag[0];
 
+    public WortEintrag[] getWorteinträge() {
+        return Worteinträge;
+    }
+
     /**
      * Diese Methode fügt Wörter zu der Wortliste
      * hinzu und vergrößert diese dabei.
      * @param wort ist das Wort, das hinzugefügt werden soll
      */
-    public void addWort(WortEintrag wort){  //todo ändern
+
+    public void addWort(WortEintrag wort){
         try {
             WortEintrag[] temp = new WortEintrag[this.Worteinträge.length + 1];
             for (int i = 0; i < Worteinträge.length; i++) {
@@ -57,7 +62,7 @@ public class WortListe {
                     wahr = true;
                 }
             }
-            boolean geloescht = false;
+
             WortEintrag[] temp = new WortEintrag[Worteinträge.length-1];
             for(int i = 0, y = 0; y < temp.length; i++) {
                 if(Worteinträge[i] != null){

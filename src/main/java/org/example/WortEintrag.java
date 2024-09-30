@@ -93,7 +93,3 @@ public class WortEintrag {
     }
 
 }
-
-//todo list:
-//todo gui
-//todo statistik
