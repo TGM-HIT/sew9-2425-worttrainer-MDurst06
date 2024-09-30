@@ -16,12 +16,12 @@ public class WortListe {
      */
     public void addWort(WortEintrag wort){  //todo ändern
         try {
-                WortEintrag[] temp = new WortEintrag[this.Worteinträge.length + 1];
-                for (int i = 0; i < Worteinträge.length; i++) {
-                    temp[i] = Worteinträge[i];
-                }
-                temp[temp.length - 1] = wort;
-                Worteinträge = temp;
+            WortEintrag[] temp = new WortEintrag[this.Worteinträge.length + 1];
+            for (int i = 0; i < Worteinträge.length; i++) {
+                temp[i] = Worteinträge[i];
+            }
+            temp[temp.length - 1] = wort;
+            Worteinträge = temp;
         }catch (NullPointerException e){
             System.err.println(e.getMessage());
         }
