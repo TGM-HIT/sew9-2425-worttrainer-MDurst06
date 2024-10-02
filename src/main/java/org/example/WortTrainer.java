@@ -6,40 +6,37 @@ import java.util.Random;
  * Diese Klasse kann ein zufälliges WortListe-Objekt ausgeben
  * oder checken, ob es mit einem anderen Wort übereinstimmt.
  * @author Manuel Durst
- * @version 2022-09-11
+ * @version 02-10-2024
  */
 public class WortTrainer {
     private WortListe objekt;
-    private String wort;
-    //statistik
-    private int abfrage;
-    private int richtig;
-    /**
-     * Dies ist der Konstruktor
-     * @param objekt ist das übergebene Wortliste Objekt
-     */
-    public WortTrainer(WortListe objekt) {
-        try {
-            this.objekt = objekt;
-        }catch(NullPointerException e){
-            System.err.println(e.getMessage());
-        }
+    private String wort;  // Das aktuelle zu ratende Wort
+    private int abfrage;  // Anzahl der Abfragen
+    private int richtig;  // Anzahl der richtigen Antworten
 
+
+    public WortTrainer(WortListe objekt) {
+        if (objekt == null || objekt.getWortEinträge().isEmpty()) {
+            throw new IllegalArgumentException("Die Wortliste darf nicht null oder leer sein.");
+        }
+        this.objekt = objekt;
+        this.wort = null;  // Anfangs ist kein Wort ausgewählt
     }
 
-    public WortListe getWortListe(){
+    public WortListe getWortListe() {
         return this.objekt;
     }
+
     /**
      * Diese Methode WortZufall gibt einen zufälligen
      * Eintrag von dem aktuellen Wortliste-Objekt aus
      * @return gibt das zufällige Wort zurück
      */
-    public WortEintrag WortZufall(){
+    public WortEintrag wortZufall() {
         Random r = new Random();
-        int randomNum = r.nextInt(objekt.getWorteinträge().length);
-        WortEintrag randomEintrag = objekt.getWorteinträge()[randomNum];
-        this.wort = randomEintrag.getWort();
+        int randomNum = r.nextInt(objekt.getWortEinträge().size());
+        WortEintrag randomEintrag = objekt.getWortEinträge().get(randomNum);
+        this.wort = randomEintrag.getWort();  // Das aktuelle Wort wird gesetzt
         return randomEintrag;
     }
 
@@ -48,8 +45,10 @@ public class WortTrainer {
      * des aktuellen Worteintrages zurück
      * @return gibt das aktuelle Wort zurück
      */
-    public String WortAktuell(){
-        this.abfrage++;
+    public String wortAktuell() {
+        if (this.wort == null) {
+            throw new IllegalStateException("Es wurde noch kein Wort ausgewählt");
+        }
         return this.wort;
     }
 
@@ -59,9 +58,15 @@ public class WortTrainer {
      * @param wort1 ist das eingegebene Wort
      * @return gibt zurück, ob die Wörter übereinstimmen
      */
-    public boolean check (String wort1){ //todo Wortaktuell einbauen
-        if(wort1.equals(this.wort)){
-            this.richtig++;
+    public boolean check(String wort1) {
+        if (this.wort == null) {
+            throw new IllegalStateException("Es wurde noch kein Wort ausgewählt");
+        }
+
+        this.abfrage++;  // Anzahl der Abfragen erhöhen
+        if (wort1.equals(this.wort)) {
+            this.richtig++;  // Anzahl der richtigen Antworten erhöhen
+            this.wort = null;  // Wort zurücksetzen, da es richtig geraten wurde
             return true;
         }
         return false;
@@ -74,34 +79,38 @@ public class WortTrainer {
      * @param wort1 ist das eingegebene Wort
      * @return gibt zurück, ob die Wörter übereinstimmen
      */
-    public boolean checkIgnoreCase (String wort1){ //todo Wortaktuell einbauen
-        this.abfrage ++;
-        if(wort1.toUpperCase().equals(this.wort.toUpperCase())){
-            this.richtig++;
+    public boolean checkIgnoreCase(String wort1) {
+        if (this.wort == null) {
+            throw new IllegalStateException("Es wurde noch kein Wort ausgewählt");
+        }
+
+        this.abfrage++;  // Anzahl der Abfragen erhöhen
+        if (wort1.equalsIgnoreCase(this.wort)) {
+            this.richtig++;  // Anzahl der richtigen Antworten erhöhen
+            this.wort = null;  // Wort zurücksetzen, da es richtig geraten wurde
             return true;
         }
         return false;
     }
 
-    public int getAbfrage(){
+
+    public int getAbfrage() {
         return this.abfrage;
     }
-    public int getRichtig(){
+
+
+    public int getRichtig() {
         return this.richtig;
     }
 
-    public void abfrageUp(){
-        this.abfrage = abfrage + 1;
-    }
-    public void richtigUp(){
-        this.richtig = richtig + 1;
-    }
-    public void zuruecksetzen(){
+
+    public void zuruecksetzen() {
         this.abfrage = 0;
         this.richtig = 0;
     }
-    public String AbfrageRichtigToString(){
-        String text = "Von " + this.abfrage + " Abfrage(n) waren " + this.richtig + " richtig.";
-        return text;
+
+
+    public String abfrageRichtigToString() {
+        return "Von " + this.abfrage + " Abfrage(n) waren " + this.richtig + " richtig.";
     }
 }

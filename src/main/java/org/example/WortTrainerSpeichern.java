@@ -1,74 +1,77 @@
 package org.example;
+
 import java.io.*;
 
-public class WortTrainerSpeichern{
-    private final String pfad = "C:\\Users\\Manuel\\Documents\\3CHIT\\SEW\\WorttrainerSpeichern\\test.txt";
+/**
+ * Die Klasse WortTrainerSpeichern speichert die aufgenommenen
+ * Ergebnisse des Worttrainers und speichert sie in einer txt
+ * Datei
+ * @author Manuel Durst
+ * @version 02-10-2024
+ */
+public class WortTrainerSpeichern {
+    private static final String DEFAULT_PFAD = "C:\\Users\\Manuel\\Documents\\5CHIT\\SEW\\9a.1WorttrainerReloaded\\WorttrainerExtended_speichern.txt";
+    private WortTrainer wortTrainer;
 
-    private WortTrainer tr;
-
-    public WortTrainerSpeichern(WortTrainer tr){
-        this.tr = tr;
+    public WortTrainerSpeichern(WortTrainer wortTrainer) {
+        if (wortTrainer == null) {
+            throw new IllegalArgumentException("WortTrainer darf nicht null sein");
+        }
+        this.wortTrainer = wortTrainer;
     }
 
     /**
-     * Diese Methode speichert die Wortliste an dem angegebenen Pfad
-     * @param pfad übergebener Pfad
+     * Die Methode speichern speichert die aufgenommenen Ergebnisse in
+     * einen übergebenen Dateipfad.
+     * @param pfad ist der übergebene Dateipfad
      * @throws IOException
      */
     public void speichern(String pfad) throws IOException {
-        File f = new File(pfad);
-        FileWriter outputStream = null;
-        try{
-            WortEintrag[] eintraege = tr.getWortListe().getWorteinträge();
-            outputStream = new FileWriter(f);
-            for (int i = 0; i < eintraege.length; ++i) {
-                outputStream.write(eintraege[i].toString());
-                outputStream.write(System.lineSeparator());
+        File file = new File(pfad);
+        try (FileWriter writer = new FileWriter(file)) {
+            for (WortEintrag eintrag : wortTrainer.getWortListe().getWortEinträge()) {
+                writer.write(eintrag.toString());
+                writer.write(System.lineSeparator());
             }
-
-            outputStream.write(tr.AbfrageRichtigToString());
-
-        } catch (FileNotFoundException fe ){
-            System.err.println("Ungültiger Pfad!");
-        }
-        finally {
-            if (outputStream != null)
-                outputStream.close();
+            writer.write(wortTrainer.abfrageRichtigToString());
+        } catch (IOException e) {
+            throw new IOException("Fehler beim Speichern der Datei", e);
         }
     }
 
     /**
-     * Diese Methode speichert die Wortliste an dem Default Pfad
+     * Die Methode speichern speichert die aufgenommenen Ergebnisse in
+     * den default Dateipfad.
      * @throws IOException
      */
     public void speichern() throws IOException {
-        speichern(this.pfad);
+        speichern(DEFAULT_PFAD);
     }
 
     /**
-     * Diese Methode ladet die Wortliste von dem angegebenen Pfad
-     * @param pfad übergebener Pfad
+     * Die Methode laden lädt die aufgenommenen Ergebnisse einer
+     * txt Datei eines übergebenen Dateipfads.
+     * @param pfad ist der übergebene Dateipfad
      * @throws IOException
      */
     public void laden(String pfad) throws IOException {
-        try (BufferedReader inputStream = new BufferedReader(new
-                FileReader(pfad))) {
-            String text;
-            while ((text = inputStream.readLine()) != null) {
-                System.out.println(text);
+        File file = new File(pfad);
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);  // Implementierung für das Einlesen der Daten
             }
-        } catch (FileNotFoundException fe ){
-            System.err.println("Ungültiger Pfad!");
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException("Die Datei wurde nicht gefunden");
         }
     }
 
     /**
-     *Diese Methode speichert die Wortliste von dem default Pfad
+     * Die Methode laden lädt die aufgenommenen Ergebnisse einer
+     * txt Datei des default Dateipfads.
      * @throws IOException
      */
     public void laden() throws IOException {
-        laden(this.pfad);
+        laden(DEFAULT_PFAD);
     }
-
-
 }

@@ -1,94 +1,62 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Diese Klasse erstellt eine Wortliste, wo man mehrere
  * Wörter eintragen und löschen kann.
  * @author Manuel Durst
- * @version 2022-09-11
+ * @version 02-10-2024
  */
 public class WortListe {
-    private WortEintrag[] Worteinträge = new WortEintrag[0];
+    private List<WortEintrag> wortEinträge;
 
-    public WortEintrag[] getWorteinträge() {
-        return Worteinträge;
+    public WortListe() {
+        this.wortEinträge = new ArrayList<>();
     }
 
-    /**
-     * Diese Methode fügt Wörter zu der Wortliste
-     * hinzu und vergrößert diese dabei.
-     * @param wort ist das Wort, das hinzugefügt werden soll
-     */
+    public List<WortEintrag> getWortEinträge() {
+        return new ArrayList<>(wortEinträge);  // defensive copy
+    }
 
-    public void addWort(WortEintrag wort){
-        try {
-            WortEintrag[] temp = new WortEintrag[this.Worteinträge.length + 1];
-            for (int i = 0; i < Worteinträge.length; i++) {
-                temp[i] = Worteinträge[i];
-            }
-            temp[temp.length - 1] = wort;
-            Worteinträge = temp;
-        }catch (NullPointerException e){
-            System.err.println(e.getMessage());
+    public void addWort(WortEintrag wort) {
+        if (wort != null) {
+            wortEinträge.add(wort);
+        } else {
+            throw new IllegalArgumentException("WortEintrag darf nicht null sein");
         }
     }
 
-    /**
-     * Doese Methode gibt den Worteintrag des
-     * eingegebenen Indexes zurück.
-     * @param index ist der eingegebene Index
-     * @return gibt den Worteintrag zurück
-     */
-    public WortEintrag getWorteinträge(int index) {
-        try {
-            return Worteinträge[index];
-        }catch (IndexOutOfBoundsException | NullPointerException e){
-            System.err.println(e.getMessage());
+    public WortEintrag getWortEintrag(int index) {
+        if (index >= 0 && index < wortEinträge.size()) {
+            return wortEinträge.get(index);
+        } else {
+            throw new IndexOutOfBoundsException("Index außerhalb des Bereichs");
         }
-        return null;
     }
 
     /**
      * Diese Methode sucht die eingegebene
      * Bezeichnung und löscht dieses von den Worteinträgen.
-     * @param Bezeichnung ist die eingegebene Bezeichnung
+     * @param bezeichnung ist die eingegebene Bezeichnung
      * @return gibt zurück, ob die Bezeichnung erfolgreich gelöscht werden konnte
      */
-    public boolean loeschWort(String Bezeichnung){
-        try {
-            boolean wahr = false;
-            for (int i = 0; i < this.Worteinträge.length; i++) {
-                if (Bezeichnung.equals(this.Worteinträge[i].getWort())) {
-                    this.Worteinträge[i] = null;
-                    wahr = true;
-                }
-            }
-
-            WortEintrag[] temp = new WortEintrag[Worteinträge.length-1];
-            for(int i = 0, y = 0; y < temp.length; i++) {
-                if(Worteinträge[i] != null){
-                    temp[y] = Worteinträge[i];
-                    y++;
-                }
-            }
-            this.Worteinträge = temp;
-            return wahr;
-        }catch(NullPointerException e){
-            System.err.println(e.getMessage());
-        }
-        return false;
+    public boolean loeschWort(String bezeichnung) {
+        return wortEinträge.removeIf(wort -> wort.getWort().equals(bezeichnung));
     }
 
-    /**
-     * Diese Methode ändert die Methode toString der Superklasse.
-     * Es werden die Daten zu einem text zusammengefasst
-     * @return gibt den erstellten Text zurück
-     */
     @Override
-    public String toString(){
-        String text = "";
-        for(int i = 0; i < Worteinträge.length; i++){
-            text = text + Worteinträge[i].getWort() + " " + Worteinträge[i].getURL() + "\n";
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (WortEintrag eintrag : wortEinträge) {
+            sb.append(eintrag.getWort()).append(" ").append(eintrag.getURL()).append("\n");
         }
-        return text;
+        return sb.toString();
     }
+
+    //public List<WortEintrag> getWorteinträge() {
+    //    return wortEinträge;
+    //}
+
 }

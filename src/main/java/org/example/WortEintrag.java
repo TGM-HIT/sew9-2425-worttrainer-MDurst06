@@ -1,31 +1,42 @@
 package org.example;
+
 import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Diese Klasse übernimmt ein Wort und eine URL.
  * Die URL wird später geprüft, ob diese auch gültig ist.
  * @author Manuel Durst
- * @version 2022-09-11
+ * @version 02-10-2024
  */
-
 public class WortEintrag {
-    private String Wort;
-    private String URL;
+    private String wort;
+    private String url;
 
     /**
      * Konstruktor
-     * @param Wort ist das übergebene Wort
-     * @param URL ist die übergebene URL
+     * @param wort ist das übergebene Wort
+     * @param url ist die übergebene URL
      */
-    public WortEintrag(String Wort, String URL) {
-        if(Wort.length() >= 2) {
-            this.Wort = Wort;
+    public WortEintrag(String wort, String url) {
+        if (wort != null && wort.length() >= 2) {
+            this.wort = wort;
+        } else {
+            throw new IllegalArgumentException("Das Wort muss mindestens 2 Buchstaben beinhalten");
         }
-        else{
-            System.err.println("Das Wort muss mindestens 2 Buchstaben beinhalten");
+
+        if (checkURL(url)) {
+            this.url = url;
+        } else {
+            throw new IllegalArgumentException("Ungültige URL");
         }
-        this.URL = URL;
+    }
+
+    public String getWort() {
+        return wort;
+    }
+
+    public String getURL() {
+        return url;
     }
 
     /**
@@ -33,63 +44,21 @@ public class WortEintrag {
      * ob die übergebene URL gültig ist.
      * @return gibt die Gültigkeit zurück
      */
-    public static boolean checkURL(String URL){
-
-        if(URL.startsWith("https://")){
-            char c1 = URL.charAt(8);
-            if (!(c1 >= 'A' && c1 <= 'Z') && !(c1 >= 'a' && c1 <= 'z')) {
-                return false;
-            }
-            if(!(URL.charAt(9) == '.')){
-                return false;
-            }
-            char c2 = URL.charAt(10);
-            if (!(c2 >= 'A' && c2 <= 'Z') && !(c2 >= 'a' && c2 <= 'z')) {
-                return false;
-            }
-            return true;
+    public static boolean checkURL(String url) {
+        if (url == null) {
+            return false;
         }
-        else if(URL.startsWith("http://")){
-            char c1 = URL.charAt(7);
-            if (!(c1 >= 'A' && c1 <= 'Z') && !(c1 >= 'a' && c1 <= 'z')) {
-                return false;
-            }
-            if(!(URL.charAt(8) == '.')){
-                return false;
-            }
-            char c2 = URL.charAt(9);
-            if (!(c2 >= 'A' && c2 <= 'Z') && !(c2 >= 'a' && c2 <= 'z')) {
-                return false;
-            }
-            return true;
+
+        try {
+            new java.net.URL(url);
+            return url.startsWith("http://") || url.startsWith("https://");
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
         }
-        return false;
     }
 
-    /**
-     * Getter Methode von Wort
-     * @return gibt das Attribut Wort zurück
-     */
-    public String getWort() {
-        return Wort;
-    }
-
-    /**
-     * Getter Methode von URL
-     * @return gibt das Attribut URL zurück
-     */
-    public String getURL() {
-        return URL;
-    }
-
-    /**
-     * Diese Methode ändert die Methode toString der Superklasse.
-     * Es werden die Daten zu einem text zusammengefasst
-     * @return gibt den erstellten Text zurück
-     */
     @Override
-    public String toString(){
-        return this.Wort + ";" + this.URL;
+    public String toString() {
+        return this.wort + ";" + this.url;
     }
-
 }

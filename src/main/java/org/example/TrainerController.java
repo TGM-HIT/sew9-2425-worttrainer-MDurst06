@@ -14,7 +14,7 @@ public class TrainerController implements ActionListener {
         this.view = new TrainerPanel(this);
         this.wt = wt;
         this.wts = new WortTrainerSpeichern(wt);
-        this.view.setUrl(this.wt.WortZufall().getURL());
+        //this.view.setUrl(this.wt.WortZufall().getURL());
         this.view.update(wt.getRichtig(), wt.getAbfrage());
     }
     public WortTrainer getWt(){
@@ -30,7 +30,7 @@ public class TrainerController implements ActionListener {
         String com = e.getActionCommand();
         switch(com){
             case "Zurücksetzen":
-                this.wt.zuruecksetzen();
+                //this.wt.zuruecksetzen();
                 break;
 
             case "Wort hinzufügen":
@@ -55,7 +55,7 @@ public class TrainerController implements ActionListener {
             default:
                 String wort = view.getJText();
                 boolean gleich = this.wt.checkIgnoreCase(wort);
-                view.setUrl(wt.WortZufall().getURL());
+                //view.setUrl(wt.WortZufall().getURL());
                 break;
         }
         try {
