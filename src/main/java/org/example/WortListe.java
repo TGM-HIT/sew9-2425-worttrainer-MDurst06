@@ -55,8 +55,5 @@ public class WortListe {
         return sb.toString();
     }
 
-    //public List<WortEintrag> getWorteinträge() {
-    //    return wortEinträge;
-    //}
 
 }

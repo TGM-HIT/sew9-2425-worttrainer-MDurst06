@@ -54,7 +54,7 @@ public class TrainerController implements ActionListener {
 
             default:
                 String wort = view.getJText();
-                boolean gleich = this.wt.checkIgnoreCase(wort);
+                //boolean gleich = this.wt.checkIgnoreCase(wort);
                 //view.setUrl(wt.WortZufall().getURL());
                 break;
         }
