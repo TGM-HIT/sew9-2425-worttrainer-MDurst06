@@ -1,1 +1,0 @@
-{"richtig":0,"wortListe":[{"wort":"Hund","url":"https://example.com/hund.jpg"},{"wort":"Katze","url":"https://example.com/katze.jpg"}],"abfragen":0,"aktuellesWort":"Katze"}

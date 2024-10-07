@@ -3,12 +3,6 @@ package org.example;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Diese Klasse erstellt eine Wortliste, wo man mehrere
- * Wörter eintragen und löschen kann.
- * @author Manuel Durst
- * @version 02-10-2024
- */
 public class WortListe {
     private List<WortEintrag> wortEinträge;
 
@@ -36,12 +30,6 @@ public class WortListe {
         }
     }
 
-    /**
-     * Diese Methode sucht die eingegebene
-     * Bezeichnung und löscht dieses von den Worteinträgen.
-     * @param bezeichnung ist die eingegebene Bezeichnung
-     * @return gibt zurück, ob die Bezeichnung erfolgreich gelöscht werden konnte
-     */
     public boolean loeschWort(String bezeichnung) {
         return wortEinträge.removeIf(wort -> wort.getWort().equals(bezeichnung));
     }
@@ -55,5 +43,8 @@ public class WortListe {
         return sb.toString();
     }
 
-
+    // Neue Methode
+    public List<WortEintrag> getWorteinträge() {
+        return new ArrayList<>(wortEinträge); // defensive copy
+    }
 }
