@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.net.MalformedURLException;
 
 /**
- * TrainerFrame is the main JFrame for the Worttrainer application.
+ * TrainerFrame is the main JFrame for the Worttrainer application
  * It initializes the frame with a given WortTrainer and PersistenceStrategy.
  *
  * @author Manuel Durst
